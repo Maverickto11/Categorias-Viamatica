@@ -1,27 +1,53 @@
-<div class="login-container">
-    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+<!-- login.component.html -->
+<div class="min-h-screen flex items-center justify-center bg-gray-900">
+  <div class="bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-md">
+    <h1 class="text-2xl font-bold text-white text-center mb-6">Iniciar Sesión</h1>
+
+    <form (ngSubmit)="login()" class="space-y-4">
+      <!-- Campo de correo -->
       <div>
-        <label for="correo">Correo</label>
+        <label for="email" class="block text-sm font-medium text-gray-400">Correo</label>
         <input
+          id="email"
           type="email"
-          id="correo"
-          name="correo"
-          [(ngModel)]="credenciales.Correo"
+          [(ngModel)]="credentials.correo"
+          name="email"
           required
+          class="mt-1 block w-full px-4 py-2 bg-gray-700 text-white rounded-md focus:outline-none focus:ring focus:ring-red-500"
+          placeholder="Ingresa tu correo"
         />
       </div>
+
+      <!-- Campo de contraseña -->
       <div>
-        <label for="contraseña">Contraseña</label>
+        <label for="password" class="block text-sm font-medium text-gray-400">Contraseña</label>
         <input
+          id="password"
           type="password"
-          id="contraseña"
-          name="contraseña"
-          [(ngModel)]="credenciales.Contrasena"
+          [(ngModel)]="credentials.contrasena"
+          name="password"
           required
+          class="mt-1 block w-full px-4 py-2 bg-gray-700 text-white rounded-md focus:outline-none focus:ring focus:ring-red-500"
+          placeholder="Ingresa tu contraseña"
         />
       </div>
-      <button type="submit" [disabled]="loginForm.invalid">Iniciar Sesión</button>
+
+      <!-- Botón de inicio de sesión -->
+      <div>
+        <button
+          type="submit"
+          class="w-full py-2 px-4 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 focus:outline-none focus:ring focus:ring-red-500"
+        >
+          Iniciar Sesión
+        </button>
+      </div>
     </form>
-    <p *ngIf="error" class="error">{{ error }}</p>
+
+    <div class="mt-4 text-center">
+      <p class="text-sm text-gray-400">
+        ¿No tienes cuenta?
+        <a routerLink="/register" class="text-red-500 hover:underline">Regístrate aquí</a>
+      </p>
+    </div>
   </div>
-  
+</div>

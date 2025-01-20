@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { api } from '../settings/api';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, throwError } from 'rxjs';
+import { LoginResponse } from '../interfaces/LoginResponse';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -9,31 +11,30 @@ import { Observable } from 'rxjs';
 export class AuthService {
 
   api = api.apiUrl;
+  private currentUserSubject: BehaviorSubject<any>;
+  public currentUser: Observable<any>;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {
+    this.currentUserSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('user') || '{}'));
+    this.currentUser = this.currentUserSubject.asObservable();
+  }
 
   registrarUsuario(usuario: any) {
     return this.http.post(`${this.api}/Auth/registro`, usuario);
   }
 
-  login(credenciales: { Correo: string; Contrasena: string }): Observable<any> {
-    console.log('Credenciales enviadas:', credenciales); // Verifica los datos enviados
-    return this.http.post(`${this.api}/Auth/login`, credenciales);
+  login(credentials: { correo: string; contrasena: string }): Observable<any> {
+    return this.http.post('https://localhost:7139/api/Auth/login', credentials);
   }
 
-  guardarToken(token: string): void {
-    localStorage.setItem('authToken', token);
+  // Método para obtener el token almacenado
+  getToken(): string | null {
+    return sessionStorage.getItem('token');
   }
 
-  obtenerToken(): string | null {
-    return localStorage.getItem('authToken');
-  }
-
-  cerrarSesion(): void {
-    localStorage.removeItem('authToken');
-  }
-
-  estaAutenticado(): boolean {
-    return !!this.obtenerToken();
+  // Método para cerrar sesión
+  logout() {
+    sessionStorage.removeItem('token');
+    this.router.navigate(['/login']);
   }
 }

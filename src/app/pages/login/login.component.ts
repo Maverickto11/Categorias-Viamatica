@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { Token } from '@angular/compiler';
+import { LoginResponse } from '../../interfaces/LoginResponse';
 
 @Component({
   selector: 'app-login',
@@ -14,27 +15,33 @@ import { Token } from '@angular/compiler';
 })
 export class LoginComponent {
 
-  credenciales = {
-    Correo: '',
-    Contrasena: '',
+  credentials = {
+    correo: '',
+    contrasena: '',
   };
-  error: string | null = null;
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  onSubmit(): void {
-    this.authService.login(this.credenciales).subscribe(
-      (response) => {
-        if (response.token) {
-          this.authService.guardarToken(response.token);
-          this.router.navigate(['/registro']); // Cambia '/dashboard' por la ruta deseada
+  login() {
+    this.authService.login(this.credentials).subscribe({
+      next: (response: any) => {
+        // Cambiar 'token' por 'Token' para acceder correctamente al valor
+        if (response && response.Token) {
+          console.log('Token recibido:', response.Token);
+
+          // Guarda el token en el almacenamiento local (opcional)
+          localStorage.setItem('token', response.Token);
+
+          // Redirige al usuario al "home"
+          this.router.navigate(['/home']);
         } else {
-          this.error = 'Error inesperado al iniciar sesión.';
+          console.error('No se recibió un token válido:', response);
         }
       },
-      (error) => {
-        this.error = error.error.message || 'Credenciales incorrectas.';
+      error: (err: any) => {
+        console.error('Error al iniciar sesión:', err);
+        alert('Credenciales incorrectas. Por favor, intente de nuevo.');
       }
-    );
+    });
   }
 }

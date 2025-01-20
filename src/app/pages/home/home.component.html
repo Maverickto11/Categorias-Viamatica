@@ -1,0 +1,21 @@
+<div class="publicaciones">
+  <h2>Mis Publicaciones</h2>
+  <div *ngFor="let publicacion of publicaciones">
+    <div class="publicacion">
+      <h3>{{ publicacion.titulo }}</h3>
+      <p>{{ publicacion.contenido }}</p>
+      <button (click)="setEditForm(publicacion)">Editar</button>
+      <button (click)="deletePublicacion(publicacion.id)">Eliminar</button>
+    </div>
+  </div>
+
+  <div class="formulario-publicacion">
+    <h2 *ngIf="isEditing">Editar Publicación</h2>
+    <h2 *ngIf="!isEditing">Crear Nueva Publicación</h2>
+    <form (ngSubmit)="isEditing ? editPublicacion(publicacion.id) : createPublicacion()">
+      <input type="text" [(ngModel)]="publicacion.titulo" name="titulo" placeholder="Título" required />
+      <textarea [(ngModel)]="publicacion.contenido" name="contenido" placeholder="Contenido" required></textarea>
+      <button type="submit">{{ isEditing ? 'Actualizar' : 'Crear' }}</button>
+    </form>
+  </div>
+</div>
