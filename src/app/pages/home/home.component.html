@@ -1,21 +1,54 @@
-<div class="publicaciones">
+<div class="container">
   <h2>Mis Publicaciones</h2>
-  <div *ngFor="let publicacion of publicaciones">
-    <div class="publicacion">
-      <h3>{{ publicacion.titulo }}</h3>
-      <p>{{ publicacion.contenido }}</p>
-      <button (click)="setEditForm(publicacion)">Editar</button>
-      <button (click)="deletePublicacion(publicacion.id)">Eliminar</button>
+
+  <!-- Formulario para crear nueva publicación -->
+  <div>
+    <h3>Crear Nueva Publicación</h3>
+    <form (ngSubmit)="crearPublicacion()">
+      <div>
+        <label for="titulo">Título</label>
+        <input type="text" id="titulo" [(ngModel)]="nuevaPublicacion.Titulo" name="titulo" required />
+      </div>
+      <div>
+        <label for="contenido">Contenido</label>
+        <textarea id="contenido" [(ngModel)]="nuevaPublicacion.Contenido" name="contenido" required></textarea>
+      </div>
+      <div>
+        <label for="categoria">Categoría</label>
+        <input type="number" id="categoria" [(ngModel)]="nuevaPublicacion.CategoriaId" name="categoria" required />
+      </div>
+      <button type="submit">Crear Publicación</button>
+    </form>
+  </div>
+
+  <!-- Mostrar publicaciones -->
+  <div *ngIf="publicaciones.length > 0">
+    <div *ngFor="let publicacion of publicaciones" class="publicacion-card">
+      <h3>{{ publicacion.Titulo }}</h3>
+      <p>{{ publicacion.Contenido }}</p>
+      <small>Publicado por: {{ publicacion.Usuario }}</small>
+      <button (click)="iniciarEdicion(publicacion)">Editar</button>
+      <button (click)="eliminarPublicacion(publicacion.Id)">Eliminar</button>
     </div>
   </div>
 
-  <div class="formulario-publicacion">
-    <h2 *ngIf="isEditing">Editar Publicación</h2>
-    <h2 *ngIf="!isEditing">Crear Nueva Publicación</h2>
-    <form (ngSubmit)="isEditing ? editPublicacion(publicacion.id) : createPublicacion()">
-      <input type="text" [(ngModel)]="publicacion.titulo" name="titulo" placeholder="Título" required />
-      <textarea [(ngModel)]="publicacion.contenido" name="contenido" placeholder="Contenido" required></textarea>
-      <button type="submit">{{ isEditing ? 'Actualizar' : 'Crear' }}</button>
+  <!-- Formulario para editar publicación -->
+  <div *ngIf="publicacionIdEdicion">
+    <h3>Editar Publicación</h3>
+    <form (ngSubmit)="editarPublicacionSubmit()">
+      <div>
+        <label for="titulo">Título</label>
+        <input type="text" id="titulo" [(ngModel)]="editarPublicacion.Titulo" name="titulo" required />
+      </div>
+      <div>
+        <label for="contenido">Contenido</label>
+        <textarea id="contenido" [(ngModel)]="editarPublicacion.Contenido" name="contenido" required></textarea>
+      </div>
+      <div>
+        <label for="categoria">Categoría</label>
+        <input type="number" id="categoria" [(ngModel)]="editarPublicacion.CategoriaId" name="categoria" required />
+      </div>
+      <button type="submit">Actualizar Publicación</button>
     </form>
   </div>
 </div>

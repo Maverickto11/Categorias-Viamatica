@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Publicacion } from '../../interfaces/Publicacion';
 import { PublicacionServiceService } from '../../services/publicacion-service.service';
@@ -13,79 +13,82 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
-  publicaciones: Publicacion[] = [];
-  publicacion: Publicacion = { id: 0, titulo: '', contenido: '', categoriaId: 0 };
-  isEditing: boolean = false;
+export class HomeComponent implements OnInit{
+  publicaciones: any[] = [];
+  nuevaPublicacion: any = { Titulo: '', Contenido: '', CategoriaId: 0 };
+  editarPublicacion: any = { Titulo: '', Contenido: '', CategoriaId: 0 };
+  publicacionIdEdicion: number | null = null;
 
-  constructor(private publicacionService: PublicacionServiceService) {}
+  constructor(private publicacionService: PublicacionServiceService) { }
 
   ngOnInit(): void {
-    this.loadPublicaciones();
+    this.obtenerTodasPublicaciones();
   }
 
-  // Cargar las publicaciones
-  loadPublicaciones(): void {
-    this.publicacionService.getPublicaciones().subscribe(
-      (data) => {
+  obtenerTodasPublicaciones(): void {
+    this.publicacionService.getTodasPublicaciones().subscribe({
+      next: (data) => {
         this.publicaciones = data;
       },
-      (error) => {
-        console.error('Error al cargar publicaciones', error);
+      error: (err) => {
+        console.error('Error al obtener todas las publicaciones:', err);
       }
-    );
+    });
   }
 
-  // Crear una nueva publicación
-  createPublicacion(): void {
-    if (this.publicacion.titulo && this.publicacion.contenido) {
-      this.publicacionService.createPublicacion(this.publicacion).subscribe(
-        (data) => {
-          this.loadPublicaciones();  // Recargar las publicaciones después de crear una nueva
-          this.resetForm();
+  obtenerPublicaciones(): void {
+    this.publicacionService.getPublicaciones().subscribe({
+      next: (data) => {
+        this.publicaciones = data;
+      },
+      error: (err) => {
+        console.error('Error al obtener publicaciones:', err);
+      }
+    });
+  }
+
+  crearPublicacion(): void {
+    this.publicacionService.createPublicacion(this.nuevaPublicacion).subscribe({
+      next: (data) => {
+        this.obtenerPublicaciones();  // Recargar las publicaciones
+        this.nuevaPublicacion = { Titulo: '', Contenido: '', CategoriaId: 0 };  // Limpiar campos
+      },
+      error: (err) => {
+        console.error('Error al crear la publicación:', err);
+      }
+    });
+  }
+
+  editarPublicacionSubmit(): void {
+    if (this.publicacionIdEdicion) {
+      this.publicacionService.editPublicacion(this.publicacionIdEdicion, this.editarPublicacion).subscribe({
+        next: (data) => {
+          this.obtenerPublicaciones();  // Recargar las publicaciones
+          this.publicacionIdEdicion = null;  // Limpiar ID de edición
+          this.editarPublicacion = { Titulo: '', Contenido: '', CategoriaId: 0 };  // Limpiar campos
         },
-        (error) => {
-          console.error('Error al crear publicación', error);
+        error: (err) => {
+          console.error('Error al editar la publicación:', err);
         }
-      );
+      });
     }
   }
 
-  // Editar una publicación
-  editPublicacion(id: number): void {
-    this.publicacionService.editPublicacion(id, this.publicacion).subscribe(
-      (data) => {
-        this.loadPublicaciones();  // Recargar las publicaciones después de editar
-        this.resetForm();
-        this.isEditing = false;
-      },
-      (error) => {
-        console.error('Error al editar publicación', error);
-      }
-    );
+  eliminarPublicacion(id: number): void {
+    if (confirm('¿Estás seguro de que deseas eliminar esta publicación?')) {
+      this.publicacionService.deletePublicacion(id).subscribe({
+        next: (data) => {
+          this.obtenerPublicaciones();  // Recargar las publicaciones
+        },
+        error: (err) => {
+          console.error('Error al eliminar la publicación:', err);
+        }
+      });
+    }
   }
 
-  // Eliminar una publicación
-  deletePublicacion(id: number): void {
-    this.publicacionService.deletePublicacion(id).subscribe(
-      (data) => {
-        this.loadPublicaciones();  // Recargar las publicaciones después de eliminar
-      },
-      (error) => {
-        console.error('Error al eliminar publicación', error);
-      }
-    );
-  }
-
-  // Resetea el formulario
-  resetForm(): void {
-    this.publicacion = { id: 0, titulo: '', contenido: '', categoriaId: 0 };
-    this.isEditing = false;
-  }
-
-  // Establecer un formulario para editar
-  setEditForm(publicacion: Publicacion): void {
-    this.publicacion = { ...publicacion };
-    this.isEditing = true;
+  iniciarEdicion(publicacion: any): void {
+    this.publicacionIdEdicion = publicacion.Id;
+    this.editarPublicacion = { ...publicacion };  // Copiar los datos de la publicación a editar
   }
 }

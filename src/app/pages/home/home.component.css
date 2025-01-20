@@ -1,0 +1,25 @@
+.container {
+    width: 80%;
+    margin: 0 auto;
+  }
+  
+  .publicacion-card {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 15px;
+  }
+  
+  button {
+    margin-top: 10px;
+  }
+  
+  form {
+    margin-bottom: 20px;
+  }
+  
+  input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+  }
+  
