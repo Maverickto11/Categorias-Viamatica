@@ -27,12 +27,10 @@ export class AuthService {
     return this.http.post('https://localhost:7139/api/Auth/login', credentials);
   }
 
-  // Método para obtener el token almacenado
   getToken(): string | null {
     return sessionStorage.getItem('token');
   }
 
-  // Método para cerrar sesión
   logout() {
     sessionStorage.removeItem('token');
     this.router.navigate(['/login']);

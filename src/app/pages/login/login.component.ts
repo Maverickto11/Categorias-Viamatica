@@ -25,15 +25,13 @@ export class LoginComponent {
   login() {
     this.authService.login(this.credentials).subscribe({
       next: (response: any) => {
-        // Cambiar 'token' por 'Token' para acceder correctamente al valor
+
         if (response && response.Token) {
           console.log('Token recibido:', response.Token);
 
-          // Guarda el token en el almacenamiento local (opcional)
           localStorage.setItem('token', response.Token);
 
-          // Redirige al usuario al "home"
-          this.router.navigate(['/home']);
+          this.router.navigate(['/categorias']);
         } else {
           console.error('No se recibió un token válido:', response);
         }

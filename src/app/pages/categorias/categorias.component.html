@@ -1,0 +1,14 @@
+<div class="category-container">
+    <h2 class="title">Categorías</h2>
+    <div class="category-grid">
+      <div *ngFor="let categoria of categorias" class="category-card">
+        <a [routerLink]="['/home', categoria.Id]">
+        <img [src]="categoria.ImagenUrl" alt="{{ categoria.ImagenUrl }}" class="category-image"/>
+        <div class="category-info">
+          <span class="category-name">{{ categoria.Nombre }}</span>
+        </div>      
+        </a>
+      </div>
+    </div>
+  </div>
+  

@@ -13,17 +13,25 @@ export class PublicacionServiceService {
 
   constructor(private http: HttpClient) { }
 
+  getPublicacionesPorCategoria(Id: number): Observable<any[]> {
+
+    const token = localStorage.getItem('token'); 
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.get<any[]>(`${this.apiUrl}/categoria/${Id}`, { headers });
+  }
+    
 
   getTodasPublicaciones(): Observable<any> {
-    const token = localStorage.getItem('token'); // Obtener el token almacenado
+    const token = localStorage.getItem('token'); 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
   
     return this.http.get<any>(`${this.apiUrl}/todas`, { headers });
   }
 
-  // Método para obtener las publicaciones del usuario autenticado
   getPublicaciones(): Observable<any> {
-    const token = localStorage.getItem('token'); // Obtener el token almacenado
+    const token = localStorage.getItem('token'); 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
     return this.http.get<any>(this.apiUrl, { headers });
@@ -36,7 +44,6 @@ export class PublicacionServiceService {
     return this.http.post<any>(this.apiUrl, publicacion, { headers });
   }
 
-  // Editar una publicación
   editPublicacion(id: number, publicacion: any): Observable<any> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -44,7 +51,6 @@ export class PublicacionServiceService {
     return this.http.put<any>(`${this.apiUrl}/${id}`, publicacion, { headers });
   }
 
-  // Eliminar una publicación
   deletePublicacion(id: number): Observable<any> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);

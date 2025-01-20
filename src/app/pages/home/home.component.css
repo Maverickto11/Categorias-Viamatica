@@ -1,25 +1,88 @@
+/* Estilos personalizados */
 .container {
-    width: 80%;
-    margin: 0 auto;
-  }
-  
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background-color: #ecf0f1; /* Fondo claro */
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.publicacion-card {
+  margin-top: 30px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  max-width: 45%;
+  background-color: #34495e; /* Azul oscuro para las tarjetas */
+  color: #c9caca; /* Texto en color claro */
+}
+
+.publicacion-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.publicacion-card .contenido {
+  max-height: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.publicacion-card h3 {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: #ecf0f1; /* Título en color claro */
+}
+
+.bg-gray-100 {
+  background-color: #d1cfcf;
+}
+
+.form-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+input, textarea {
+  border: 2px solid #a1a6aa; /* Borde gris claro */
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 1rem;
+  width: 100%;
+}
+
+input:focus, textarea:focus {
+  border-color: #2980b9; /* Azul oscuro al enfocarse */
+}
+
+button {
+  background-color: #2c3e50; /* Azul oscuro para los botones */
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  width: 100%;
+  font-size: 1rem;
+}
+
+button:hover {
+  background-color: #34495e; /* Azul más oscuro en hover */
+}
+
+/* Ajuste para dos columnas en pantallas más grandes */
+@media (min-width: 768px) {
   .publicacion-card {
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin-bottom: 15px;
+    max-width: 45%; /* 2 cartillas por fila */
   }
-  
-  button {
-    margin-top: 10px;
+
+  .publicaciones-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px; /* Añadido para mejorar el espaciado entre las cartas */
   }
-  
-  form {
-    margin-bottom: 20px;
-  }
-  
-  input, textarea {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-  }
-  
+}
