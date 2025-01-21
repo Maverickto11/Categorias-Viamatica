@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Publicacion } from '../../interfaces/Publicacion';
 import { PublicacionServiceService } from '../../services/publicacion-service.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
  
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule ],
+  imports: [CommonModule, FormsModule, RouterLink ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-categorias',
   standalone: true,
-  imports: [CommonModule, RouterModule ],
+  imports: [CommonModule, RouterModule],
   templateUrl: './categorias.component.html',
   styleUrl: './categorias.component.css'
 })
