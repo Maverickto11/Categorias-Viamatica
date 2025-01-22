@@ -44,12 +44,23 @@ export class PublicacionServiceService {
     return this.http.post<any>(this.apiUrl, publicacion, { headers });
   }
 
-  editPublicacion(id: number, publicacion: any): Observable<any> {
+ /* editPublicacion(id: number, publicacion: any): Observable<any> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
     return this.http.put<any>(`${this.apiUrl}/${id}`, publicacion, { headers });
-  }
+  }*/
+
+    editPublicacion(id: number, publicacion: any): Observable<any> {
+      const token = localStorage.getItem('token'); // Obtén el token de autenticación desde localStorage
+  
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.put(`${this.apiUrl}/${id}`, publicacion, { headers });
+    }
+  
+  
+
+
 
   deletePublicacion(id: number): Observable<any> {
     const token = localStorage.getItem('token');

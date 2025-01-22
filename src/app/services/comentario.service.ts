@@ -33,10 +33,15 @@ export class ComentarioService {
   }*/
 
   editComentario(comentarioId: number, contenido: string): Observable<any> {
-    return this.http.put(`${this.apiUrl}/comentarios/${comentarioId}`, { Contenido: contenido });
+    const token = localStorage.getItem('token'); 
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.put(`${this.apiUrl}/Comentario/${comentarioId}`, { Contenido: contenido }, { headers });
   }
 
   deleteComentario(comentarioId: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/comentarios/${comentarioId}`);
+    const token = localStorage.getItem('token'); 
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete(`${this.apiUrl}/Comentario/${comentarioId}`, { headers });
   }
 }

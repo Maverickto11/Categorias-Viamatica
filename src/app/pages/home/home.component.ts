@@ -68,25 +68,35 @@ export class HomeComponent implements OnInit{
     });
   }
 
-  editarPublicacionSubmit(): void {
-    if (this.publicacionIdEdicion) {
-      this.publicacionService.editPublicacion(this.publicacionIdEdicion, this.editarPublicacion).subscribe({
-        next: (data) => {
 
-          const index = this.publicaciones.findIndex(pub => pub.Id === this.publicacionIdEdicion);
+  editarPublicacions(publicacion: any): void {
+    const nuevoTitulo = prompt('Edita el título de la publicación:', publicacion.Titulo);
+    const nuevoContenido = prompt('Edita el contenido de la publicación:', publicacion.Contenido);
+  
+    if (nuevoTitulo !== null && nuevoContenido !== null) {
+      const actualizadaPublicacion = {
+        Titulo: nuevoTitulo,
+        Contenido: nuevoContenido,
+      };
+  
+      this.publicacionService.editPublicacion(publicacion.Id, actualizadaPublicacion).subscribe(
+        (response: any) => {
+          // Actualiza la publicación en el array local utilizando la respuesta del backend
+          const index = this.publicaciones.findIndex(pub => pub.Id === publicacion.Id);
           if (index !== -1) {
-            this.publicaciones[index] = data; 
+            this.publicaciones[index].Titulo = response.publicacion.Titulo;
+            this.publicaciones[index].Contenido = response.publicacion.Contenido;
           }
-          this.publicacionIdEdicion = null;  
-          this.editarPublicacion = { Titulo: '', Contenido: '', CategoriaId: 0 };  
         },
-        error: (err) => {
-          console.error('Error al editar la publicación:', err);
+        (error) => {
+          console.error('Error al editar la publicación:', error);
         }
-      });
+      );
     }
   }
   
+  
+    
 
   eliminarPublicacion(id: number): void {
     if (confirm('¿Estás seguro de que deseas eliminar esta publicación?')) {
@@ -103,7 +113,7 @@ export class HomeComponent implements OnInit{
 
   iniciarEdicion(publicacion: any): void {
     this.publicacionIdEdicion = publicacion.Id;  
-    this.editarPublicacion = { ...publicacion };  
+   // this.editarPublicacion = { ...publicacion };
   }
   
   
